@@ -1,13 +1,16 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 
 
 def get_html(url):
 	try:
+		print('downloading:'+ url)
 		h = requests.get(url)
 		h.raise_for_status()
 		h.encoding = h.apparent_encoding
-		print('downloading:'+ url)
+		
+		print('download success')
 		return h.text
 	except :
 		print("url error")
@@ -16,6 +19,7 @@ def get_content(url):
 	datas = []
 	html = get_html(url)
 	soup = BeautifulSoup(html, 'lxml')
+	print('souping')
 
 	trtags = soup.find_all('tr', align = 'center')
 	for tr in trtags:
@@ -44,7 +48,7 @@ def outtofile(datas):
 def main(url):
 	content = get_content(url)
 	outtofile(content)
-	print('success')
+	print(url + '  success')
 
 
 if __name__ == '__main__':
@@ -59,4 +63,6 @@ if __name__ == '__main__':
 			urls.append('http://www.cwl.gov.cn/kjxx/ssq/hmhz/index_' + a + '.shtml')
 	for j in urls:
 		main(j)
+		time.sleep(3)
+
 		
